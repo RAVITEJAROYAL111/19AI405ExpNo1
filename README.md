@@ -42,53 +42,64 @@
 <p>Measure the performance parameters: For each treatment performance incremented, for each movement performance decremented</p>
 program:
 
+ 
     import random
 
-    class MedicineAgent:
-         def __init__(self):
-            self.location = "Room A"
-             self.performance = 0
-
-    def act(self, environment):
-        temp = environment[self.location]["temperature"]
-
-        if temp > 98.5:
-            print(f"Patient in {self.location} unhealthy ({temp:.1f}°F). Giving medicine.")
-            self.performance += 10
-            environment[self.location]["temperature"] = 98.0
-        else:
-            print(f"Patient in {self.location} healthy ({temp:.1f}°F).")
-            self.performance -= 1
-
-        self.location = "Room B" if self.location == "Room A" else "Room A"
-        print(f"Moving to {self.location}. Performance: {self.performance}")
-        print("-" * 30)
-
-
-    def main():
-       environment = {
-           "Room A": {"temperature": random.uniform(97.0, 102.0)},
-            "Room B": {"temperature": random.uniform(97.0, 102.0)}
+    class MedicinePrescribingAgent:
+    def __init__(self):
+        self.rooms = {
+            "Room 1": random.uniform(97.0, 102.5),
+            "Room 2": random.uniform(97.0, 102.5)
         }
 
-    agent = MedicineAgent()
+        self.performance = 0
+        self.current_room = random.choice(list(self.rooms.keys()))
 
-    print("Starting simulation.")
-    print("-" * 30)
+    def sense(self):
+        """Sense current room and patient's temperature."""
+        temperature = self.rooms[self.current_room]
+        print(f"\nAgent is in {self.current_room}")
+        print(f"Patient Temperature: {temperature:.1f}°F")
+        return temperature
 
-    for step in range(5):
-        print(f"--- Step {step + 1} ---")
-        agent.act(environment)
+    def prescribe_medicine(self, temperature):
+        """Treat patient if temperature is above 98.5°F."""
+        if temperature > 98.5:
+            print("Patient has fever.")
+            print("Medicine Prescribed.")
+            self.performance += 1
+        else:
+            print("Patient is healthy.")
+            print("No medicine required.")
 
-        random_room = random.choice(["Room A", "Room B"])
-        environment[random_room]["temperature"] = random.uniform(99.0, 103.0)
+    def move(self):
+        """Move to the other room."""
+        previous_room = self.current_room
+        self.current_room = (
+            "Room 2" if self.current_room == "Room 1" else "Room 1"
+        )
 
-    print("Simulation finished.")
+        print(f"\nMoving from {previous_room} to {self.current_room}")
+        self.performance -= 1
+
+    def run(self):
+        print("=== Medicine Prescribing Agent ===")
+
+        temperature = self.sense()
+        self.prescribe_medicine(temperature)
+
+        self.move()
+
+        temperature = self.sense()
+        self.prescribe_medicine(temperature)
+
+        print("\nFinal Performance:", self.performance)
 
 
-    if __name__ == "__main__":
-        main()
+    agent = MedicinePrescribingAgent()
+    agent.run()
+
 output:
-<img width="1292" height="528" alt="Screenshot 2026-10-27 082650" src="https://github.com/user-attachments/assets/11214c75-d70e-452e-9654-ca4864048d9f" />
+<img width="591" height="335" alt="image" src="https://github.com/user-attachments/assets/486b91b1-edec-4041-a52f-f3ebaf6eb6aa" />
 Result:
 Thus, the Medicine Prescribing AI Agent was successfully developed using the PEAS description to identify patients with fever, prescribe medicine, and calculate the performance measure based on treatment and movement.
