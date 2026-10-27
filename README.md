@@ -1,6 +1,6 @@
 <h1>ExpNo 1 :Developing AI Agent with PEAS Description</h1>
 <h3>Name: A.ravi teja royal</h3>
-<h3>Register Number 212225230018/Staff Id: TSML006</h3>
+<h3>Register Number 212225230018
 date : 15/10/2026
 
 
